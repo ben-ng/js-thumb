@@ -1,0 +1,23 @@
+{
+  "author": "Ben Ng <me@benng.me> (http://benng.me)",
+  "name": "js-thumb",
+  "description": "Client-side video & image thumbnailing",
+  "keywords": [
+    "video",
+    "image",
+    "browserify",
+    "thumbnail"
+  ],
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ben-ng/js-thumb.git"
+  },
+  "main": "./lib/js-thumb",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "0.10.x"
+  }
+}
