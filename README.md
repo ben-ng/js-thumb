@@ -1,13 +1,37 @@
 #JS-Thumb
-##Thumbnail all the things.
+Thumbnail all the things, client-side!
 
 ##Demo
-Check out the `/test` folder for a demo. *Note: Your browser's security policy probably won't let you run it locally unless you access it through a server.*
+[Live demo](http://ben-ng.github.io/js-thumb)
 
-##Docs
-Documentation is in the `/docs` folder.
+##Usage
+```javascript
+var thumber = new jsthumb();
+  //When taking a screenshot from a video, it's best to supply the original dimensions of the video
+  , screenshotOpts = {
+      origWidth: 400
+    , origHeight: 400
+    }
+  //When resizing, you have to specify a maxWidth and maxHeight, and the original dimensions are recommended but optional
+  , resizingOpts = {
+      origWidth: 400
+    , origHeight: 400
+    , maxWidth:200
+    , maxHeight:200
+    };
 
+//All these methods return a Base64 encoded string
+var videoThumbnail = thumber.screenshot(document.getElementById("my_video_tag"), screenshotOpts);
+var imageThumbnail = thumber.resize(document.getElementById("my_image_tag"), resizingOpts);
+
+//You can also directly resize Base64 encoded data, but you'll need to provide a callback for that
+thumber.resizeData(imageData, opts, function(err, base64Data) {
+  //Do something with base64Data
+});
+
+//To load thumbnails in the browser
+var myImage = new Image();
+myImage.src = videoThumbnail;
 ```
-//To generate docs
-jsdoc lib/js-thumb.js --destination docs
-```
+
+Or read the [JSDoc](http://ben-ng.github.io/js-thumb/docs/jsthumb.html) if that floats your boat.
