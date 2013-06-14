@@ -6,7 +6,7 @@ Thumbnail all the things, client-side!
 
 ##Usage
 ```javascript
-var thumber = new jsthumb();
+var thumber = new jsthumb()
   //When taking a screenshot from a video, it's best to supply the original dimensions of the video
   , screenshotOpts = {
       origWidth: 400
@@ -18,11 +18,11 @@ var thumber = new jsthumb();
     , origHeight: 400
     , maxWidth:200
     , maxHeight:200
-    };
+    }
+  //All these methods return a Base64 encoded string
+  , videoThumbnail = thumber.screenshot(document.getElementById("my_video_tag"), screenshotOpts)
+  , imageThumbnail = thumber.resize(document.getElementById("my_image_tag"), resizingOpts);
 
-//All these methods return a Base64 encoded string
-var videoThumbnail = thumber.screenshot(document.getElementById("my_video_tag"), screenshotOpts);
-var imageThumbnail = thumber.resize(document.getElementById("my_image_tag"), resizingOpts);
 
 //You can also directly resize Base64 encoded data, but you'll need to provide a callback for that
 thumber.resizeData(imageData, opts, function(err, base64Data) {
