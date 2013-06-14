@@ -67,7 +67,6 @@ $(function() {
       e.stopPropagation();
       
       var dims = getDimensions($("#video_thumb_size").val())
-        , thumber = new jsthumb()
         , opts = {
             origWidth: player.width()
           , origHeight: player.height()
@@ -83,7 +82,7 @@ $(function() {
         , thumbnailDiv = $("#example_video_thumbnails");
       
       //Resize the image
-      thumber.resizeData(base64Data, resizingOpts, function(err, resizedData) {
+      jsthumb.resizeData(base64Data, resizingOpts, function(err, resizedData) {
         image.attr("src",resizedData);
         thumbnailDiv.prepend(image);
       });
@@ -101,7 +100,6 @@ $(function() {
     var iWidth = 640
       , iHeight = 468
       , dims = getDimensions($("#image_thumb_size").val())
-      , thumber = new jsthumb()
       , image = $("#example_image")
       , opts = {
           maxWidth: dims.width
@@ -109,7 +107,7 @@ $(function() {
         , origWidth: iWidth
         , origHeight: iHeight
         }
-      , base64Data = thumber.resize(image[0], opts)
+      , base64Data = jsthumb.resize(image[0], opts)
       , outputImage = $("<image />").attr("src",base64Data)
       , thumbnailDiv = $("#example_image_thumbnails");
     
