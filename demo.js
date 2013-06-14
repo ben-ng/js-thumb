@@ -77,7 +77,7 @@ $(function() {
           , maxWidth:dims.width
           , maxHeight:dims.height
           }
-        , base64Data = thumber.screenshot(video, opts)
+        , base64Data = jsthumb.screenshot(video, opts)
         , image = $("<image />")
         , thumbnailDiv = $("#example_video_thumbnails");
       
