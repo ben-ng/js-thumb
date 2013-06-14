@@ -71,14 +71,22 @@ $(function() {
         , opts = {
             origWidth: player.width()
           , origHeight: player.height()
-          , maxWidth: dims.width
-          , maxHeight: dims.height
+          }
+        , resizingOpts = {
+            origWidth: opts.origWidth
+          , origHeight: opts.origHeight
+          , maxWidth:dims.width
+          , maxHeight:dims.height
           }
         , base64Data = thumber.screenshot(video, opts)
-        , image = $("<image />").attr("src",base64Data)
+        , image = $("<image />")
         , thumbnailDiv = $("#example_video_thumbnails");
       
-      thumbnailDiv.prepend(image);
+      //Resize the image
+      thumber.resizeData(base64Data, resizingOpts, function(err, resizedData) {
+        image.attr("src",resizedData);
+        thumbnailDiv.prepend(image);
+      });
     });
   });
   
