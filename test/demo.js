@@ -90,12 +90,16 @@ $(function() {
     e.preventDefault();
     e.stopPropagation();
     
-    var dims = getDimensions($("#image_thumb_size").val())
+    var iWidth = 640
+      , iHeight = 468
+      , dims = getDimensions($("#image_thumb_size").val())
       , thumber = new jsthumb()
       , image = $("#example_image")
       , opts = {
           maxWidth: dims.width
         , maxHeight: dims.height
+        , origWidth: iWidth
+        , origHeight: iHeight
         }
       , base64Data = thumber.resize(image[0], opts)
       , outputImage = $("<image />").attr("src",base64Data)

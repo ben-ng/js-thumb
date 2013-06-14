@@ -32,6 +32,11 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary
   width: 66.66%;
 }
 
+#demopane img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
 #demopane .pane {
   width: 50%;
 }
