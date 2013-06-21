@@ -106,8 +106,14 @@
       ok(player, "Player exists");
       
       if(supported) {
-        ok(player.width(), "Player width is present (Ideally: 560)");
-        ok(player.height(), "Player height is present (Ideally: 320)");
+        if(_videoJs.IS_IOS || _videoJs.IS_ANDROID) {
+          ok(true, "SKIPPED (Mobile Browser)");
+          ok(true, "SKIPPED (Mobile Browser)");
+        }
+        else {
+          ok(player.width(), "Player width is present (Ideally: 560)");
+          ok(player.height(), "Player height is present (Ideally: 320)");
+        }
       }
       else {
         ok(true, "SKIPPED (Flash Fallback)");
