@@ -19,6 +19,7 @@
     "jake": "latest"
   , "utilities": "latest"
   , "envoy": "latest"
+  , "grunt": "latest"
   , "watchr": "2.3.3"
   },
   "optionalDependencies": {},
