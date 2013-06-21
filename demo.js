@@ -1,4 +1,8 @@
 $(function() {
+  //Hide forms at launch
+  $("#example_video_form").hide();
+  $("#example_image_form").hide();
+  
   /*
   * Helper function that gets dimensions from dropdown box
   */
@@ -17,78 +21,68 @@ $(function() {
   */
   
   //Create the video element
-  var vWidth = 560
-    , vHeight = 320
-    , source = $("<source />").attr({
-      src: "media/lego.mp4"
-    , type: "video/mp4"
-    })
-  , video = $("<video />").attr({
-      id: "example_video"
-    , class: "video-js vjs-default-skin"
-    , controls: "controls"
-    , preload: "auto"
-    , width: vWidth
-    , height: vHeight
-    }).append(source); //Append source to video element
+  var videoOpts = {
+      sources: [
+        {
+          src: "media/lego.mp4"
+        , type: "video/mp4"
+        }
+      , {
+          src: "media/lego.webm"
+        , type: "video/webm"
+        }
+      ]
+    , attributes: {
+        id: "example_video"
+      , resize: true
+      }
+    };
   
   //Add the video
-  $("#example_video_pane").append(video);
-  
-  //This resizes the video to fit the pane
-  var resizeExampleVideo = function(e) {
-    if(e) {
-      e.preventDefault();
-      e.stopPropagation();
+  jsthumb.loadVideo($("#example_video_pane")[0], videoOpts, function (err, element, player, supported) {
+    var video = $(element).find("video")[0];
+    
+    if(err) {
+      $("#example_video_pane").text("The video failed to load: " + err);
     }
-    
-    var newWidth = $("#example_video_pane").innerWidth()
-      , newHeight = vHeight * (newWidth/vWidth)
-      , player = _V_("example_video");
-    
-    player.width(newWidth);
-    player.height(newHeight);
-  };
-  
-  //Trigger the resize whenever the window changes
-  $(window).resize(resizeExampleVideo);
-  
-  //Init with video.js
-  _V_("example_video", {}, function(){
-    var player = _V_("example_video")
-      , video = $("#example_video").find("video")[0];
-    
-    
-    //Resize to fit
-    resizeExampleVideo();
-    
-    $("#example_video_form").submit(function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      var dims = getDimensions($("#video_thumb_size").val())
-        , opts = {
-            origWidth: player.width()
-          , origHeight: player.height()
-          }
-        , resizingOpts = {
-            origWidth: opts.origWidth
-          , origHeight: opts.origHeight
-          , maxWidth:dims.width
-          , maxHeight:dims.height
-          }
-        , base64Data = jsthumb.screenshot(video, opts)
-        , image = $("<image />")
-        , thumbnailDiv = $("#example_video_thumbnails");
-      
-      //Resize the image
-      jsthumb.resizeData(base64Data, resizingOpts, function(err, resizedData) {
-        image.attr("src",resizedData);
-        thumbnailDiv.prepend(image);
-      });
-    });
+    else {
+      if(!supported) {
+        player.dispose();
+        $("#example_video").remove();
+        $("#example_video_thumbnails").html('Your browser is not yet supported. <a href="https://github.com/ben-ng/js-thumb#broken">Why?</a>');
+      }
+      else {
+        $("#example_video_form").submit(function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          var dims = getDimensions($("#video_thumb_size").val())
+            , opts = {
+                origWidth: player.width()
+              , origHeight: player.height()
+              }
+            , resizingOpts = {
+                origWidth: opts.origWidth
+              , origHeight: opts.origHeight
+              , maxWidth:dims.width
+              , maxHeight:dims.height
+              }
+            , base64Data = jsthumb.screenshot(video, opts)
+            , image = new Image()
+            , thumbnailDiv = $("#example_video_thumbnails");
+          
+          //Resize the image
+          jsthumb.resizeData(base64Data, resizingOpts, function(err, resizedData) {
+            image.onload = function () {
+              thumbnailDiv.prepend(image);
+            };
+            
+            image.src=resizedData;
+          });
+        }).show();
+      }
+    }
   });
-  
   
   /*
   * Image Demo Setup
@@ -108,9 +102,13 @@ $(function() {
         , origHeight: iHeight
         }
       , base64Data = jsthumb.resize(image[0], opts)
-      , outputImage = $("<image />").attr("src",base64Data)
+      , outputImage = new Image()
       , thumbnailDiv = $("#example_image_thumbnails");
     
-    thumbnailDiv.prepend(outputImage);
-  });
+    outputImage.onload = function () {
+      thumbnailDiv.prepend(outputImage);
+    };
+    
+    outputImage.src = base64Data;
+  }).show();
 });
