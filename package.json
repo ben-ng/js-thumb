@@ -20,6 +20,7 @@
   , "utilities": "latest"
   , "envoy": "latest"
   , "watchr": "2.3.3"
+  , "grunt": "latest"
   },
   "optionalDependencies": {},
   "engines": {

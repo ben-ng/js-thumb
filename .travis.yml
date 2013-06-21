@@ -1,10 +1,7 @@
-before_script:
-  - sudo npm install -g grunt
-
 language: node_js
 
 node_js:
   - "0.10"
   - "0.8"
 
-script: grunt test --verbose --force
+script: ./node_modules/grunt/lib/grunt/cli.js test --verbose --force
