@@ -74,7 +74,7 @@ $(function() {
           //Resize the image
           jsthumb.resizeData(base64Data, resizingOpts, function(err, resizedData) {
             image.onload = function () {
-              thumbnailDiv.prepend(image);
+              thumbnailDiv.empty().prepend(image);
             };
             
             image.src=resizedData;
@@ -106,7 +106,7 @@ $(function() {
       , thumbnailDiv = $("#example_image_thumbnails");
     
     outputImage.onload = function () {
-      thumbnailDiv.prepend(outputImage);
+      thumbnailDiv.empty().prepend(outputImage);
     };
     
     outputImage.src = base64Data;
