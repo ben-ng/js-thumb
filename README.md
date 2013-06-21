@@ -81,6 +81,10 @@ jsthumb.loadVideo(document.body, videoOpts, function (err, element, player, supp
 
 You can use `.loadVideo` to load the same video file multiple times on your page, just remember to set a different `id` attribute for each one.
 
-##Broken
+##Broken?
 
-JS-Thumb requires HTML5 Video. This means that videos playing through a flash fallback *will not work*. Firefox and Opera at this time of writing do not support playing `.mp4` videos with the `<video>` tag.
+###HTML5 Video
+JS-Thumb relies on the HTML5 `<video` tag. Firefox and Opera at this time of writing do not support playing `.mp4` videos with the `<video>` tag. If you use `.loadVideo` then these browsers will fall back to the flash player, which does not support thumbnailing.
+
+###Mobile
+Thumbnailing on iOS and Android devices is not supported at this time due to browser limitations. `.loadVideo` will still create a playable video, however.
