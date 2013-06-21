@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JS-Thumb</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="http://vjs.zencdn.net/4.0/video-js.css" rel="stylesheet">
+    <link href="http://code.jquery.com/qunit/qunit-1.11.0.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="header">
+      <h1>JS-Thumb</h1>
+      <p>
+        Thumbnail all the things, client-side!
+      </p>
+      <a href="https://github.com/ben-ng/js-thumb"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+    </div>
+    <div id="content">
+      <div id="demopane">
+        <!-- First row of content (Originals) -->
+        <div id="example_video_pane" class="pane">
+          <div class="header">
+            <h2>Video</h2>
+          </div>
+        </div>
+        <div class="pane">
+          <div class="header">
+            <h2>Image</h2>
+          </div>
+          <img id="example_image"src="media/globe.jpg" />
+        </div>
+        <!-- End first row -->
+        
+        <hr />
+        
+        <!-- Second row (Thumbnails) -->
+        <div class="pane">
+          <div class="header">
+            <h2>Video Thumbnails</h2>
+            
+            <form id="example_video_form">
+              <select id="video_thumb_size">
+                <option value="560x320">Full Size</option>
+                <option value="280x160">Half Size</option>
+                <option value="300x150">300x150</option>
+                <option value="150x300">150x300</option>
+                <option value="200x200">200x200</option>
+              </select>
+              <button type="submit">Generate Thumbnail</button>
+            </form>
+            <div id="example_video_thumbnails">
+            
+            </div>
+          </div>
+        </div>
+        <div class="pane">
+          <div class="header">
+            <h2>Image Thumbnails</h2>
+            
+            <form id="example_image_form">
+              <select id="image_thumb_size">
+                <option value="640x468">Full Size</option>
+                <option value="320x234">Half Size</option>
+                <option value="300x150">300x150</option>
+                <option value="150x300">150x300</option>
+                <option value="200x200">200x200</option>
+              </select>
+              <button type="submit">Generate Thumbnail</button>
+            </form>
+            <div id="example_image_thumbnails">
+            
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Test suite on right -->
+      <div id="testpane">
+        <div class="header">
+          <h2>Test Suite</h2>
+        </div>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+      </div>
+    </div>
+    <script src="lib/video.js"></script>
+    <script src="lib/js-thumb.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+    
+    <!-- Runs the test suite -->
+    <script src="tests.js"></script>
+    <!-- Demo code -->
+    <script src="demo.js"></script>
+  </body>
+</html>
