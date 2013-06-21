@@ -52,7 +52,7 @@ $(function() {
         $("#example_video_thumbnails").html('Your browser is not yet supported. <a href="https://github.com/ben-ng/js-thumb#broken">Why?</a>');
       }
       else {
-        $("#example_video_form").submit(function(e) {
+        $("#video_thumb_size").change(function(e) {
           e.preventDefault();
           e.stopPropagation();
           
@@ -79,7 +79,9 @@ $(function() {
             
             image.src=resizedData;
           });
-        }).show();
+        });
+        
+        $("#example_video_form").show();
       }
     }
   });
@@ -87,7 +89,7 @@ $(function() {
   /*
   * Image Demo Setup
   */
-  $("#example_image_form").submit(function(e) {
+  $("#image_thumb_size").change(function(e) {
     e.preventDefault();
     e.stopPropagation();
     
@@ -110,5 +112,7 @@ $(function() {
     };
     
     outputImage.src = base64Data;
-  }).show();
+  });
+  
+  $("#example_image_form").show();
 });
