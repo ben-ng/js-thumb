@@ -2,8 +2,10 @@ var utils = require('utilities')
   , path = require('path')
   , envoy = require('envoy')
   , watchr = require('watchr')
+  , fs = require('fs')
   , DEMO_DIR = 'demosite'
-  , DEMO_PATH = path.join(__dirname, DEMO_DIR);
+  , DEMO_PATH = path.join(__dirname, DEMO_DIR)
+  , DEMO_INDEX = path.join(__dirname, DEMO_DIR, 'index.html');
 
 task('cleandemo', function () {
   utils.file.rmRf(DEMO_DIR);
@@ -15,6 +17,9 @@ task('demo', ['cleandemo'], function () {
   
   //Copy over demo files
   utils.file.cpR('test', DEMO_PATH, {silent:false});
+  
+  //Replace references to "../lib" with "lib"
+  fs.writeFileSync(DEMO_INDEX, fs.readFileSync(DEMO_INDEX).toString().replace(/\.\.\/lib/,'lib'));
   
   //Copy over lib
   utils.file.cpR('lib', path.join(DEMO_PATH,'lib'), {silent:false});
