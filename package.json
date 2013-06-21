@@ -15,7 +15,12 @@
   },
   "main": "./lib/js-thumb",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "jake": "latest"
+  , "utilities": "latest"
+  , "envoy": "latest"
+  , "watchr": "2.3.3"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "0.10.x"
