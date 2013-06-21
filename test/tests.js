@@ -12,85 +12,10 @@
     }
   };
   
-  module("helpers");
-  
-  asyncTest("test loadVideo", 5, function() {
-    var videoOpts = {
-        sources: [
-          {
-            src: "media/lego.mp4"
-          , type: "video/mp4"
-          }
-        ]
-      , attributes: {
-          id: "demo_video_one"
-        , resize: true
-        }
-      };
-    
-    //Add the video
-    jsthumb.loadVideo(videoOpts, function (err, element, player, complete) {
-      var video = $(element).find("video")[0];
-      
-      ok(element, "Video container exists");
-      ok(video, "Video element exists");
-      ok(player, "Player exists");
-      ok(player.width(), "Player width is present (Ideally: 560)");
-      ok(player.height(), "Player height is present (Ideally: 320)");
-      complete();
-      start();
-    });
-  });
-  
-  module("video",{
-    setup: function() {
-      stop();
-      
-      var videoOpts = {
-          sources: [
-            {
-              src: "media/lego.mp4"
-            , type: "video/mp4"
-            }
-          ]
-        , attributes: {
-            id: "demo_video_two"
-          , resize: true
-          }
-        };
-      
-      //Add the video
-      jsthumb.loadVideo(videoOpts, function (err, element, player, complete) {
-        $("#qunit-fixture").append(element);
-        ok(true, "Video.js loaded");
-        complete();
-        start();
-      });
-    }
-  });
-  
-  test("test screenshot",function() {
-    expect(2);
-    
-    var video = $("#demo_video_two").find("video")[0]
-      , player = _videoJs("demo_video_two")
-      , opts = {
-          origWidth: player.width()
-        , origHeight: player.height()
-        }
-      , base64Data = jsthumb.screenshot(video, opts);
-    
-    //TODO: Figure out a way to calculate similarity between images as every captured image is slightly different...
-    ok(base64Data,"Screenshot was taken")
-  });
-  
   module("image",{
     setup: function() {
       //Create the image element
-      var image = $("<image />").attr({
-          id: "demo_image"
-        , src: "media/globe.jpg"
-        })
+      var image = new Image()
       /*
       * We have to wait for
       * 1. The image to load
@@ -108,16 +33,20 @@
       stop();
       
       //Bind to the image loaded event
-      image.bind("load",function(e) {
+      image.onload = function(e) {
         e.preventDefault();
         e.stopPropagation();
         
         ok(true, "Image loaded");
-        checkIfReady();
-      });
       
-      //Add the image
-      $("#qunit-fixture").append(image);
+        //Add the image
+        $("#qunit-fixture").append(image);
+        
+        checkIfReady();
+      };
+      
+      image.setAttribute("id", "demo_image");
+      image.src = "media/globe.jpg";
     }
   });
   
@@ -141,9 +70,98 @@
       
       jsthumb.resizeData(imageData, opts, function(err, base64Data) {
         //TODO: Figure out a way to calculate similarity between images as every captured image is slightly different...
-        ok(base64Data,"Screenshot was taken")
+        ok(base64Data,"Thumbnail was taken")
         start();
       });
   });
 
+  module("helpers");
+  
+  asyncTest("test loadVideo", 6,function() {
+    var videoOpts = {
+        sources: [
+          {
+            src: "media/lego.mp4"
+          , type: "video/mp4"
+          }
+        , {
+            src: "media/lego.webm"
+          , type: "video/webm"
+          }
+        ]
+      , attributes: {
+          id: "demo_video_one"
+        }
+      };
+    
+    //Add the video
+    jsthumb.loadVideo($("#qunit-fixture")[0], videoOpts, function (err, element, player, supported) {
+      ok(true, "Video.js loaded");
+      
+      var video = $("#demo_video_one").find("video")[0]
+        , object = $("#demo_video_one").find("object")[0];
+      
+      ok(element, "Video container exists");
+      ok(video || object, "Video element exists");
+      ok(player, "Player exists");
+      
+      if(supported) {
+        ok(player.width(), "Player width is present (Ideally: 560)");
+        ok(player.height(), "Player height is present (Ideally: 320)");
+      }
+      else {
+        ok(true, "SKIPPED (Flash Fallback)");
+        ok(true, "SKIPPED (Flash Fallback)");
+      }
+      
+      start();
+      player.dispose();
+    });
+  });
+  
+  module("video");
+  
+  asyncTest("test screenshot", 2,function() {
+    var videoOpts = {
+        sources: [
+          {
+            src: "media/lego.mp4"
+          , type: "video/mp4"
+          }
+        , {
+            src: "media/lego.webm"
+          , type: "video/webm"
+          }
+        ]
+      , attributes: {
+          id: "demo_video_two"
+        }
+      };
+    
+    //Add the video
+    jsthumb.loadVideo($("#qunit-fixture")[0], videoOpts, function (err, element, player, supported) {
+      ok(true, "Video.js loaded");
+      
+      if(supported) {
+        var video = $("#demo_video_two").find("video")[0]
+          , player = _videoJs("demo_video_two")
+          , opts = {
+              origWidth: player.width()
+            , origHeight: player.height()
+            }
+          , base64Data = jsthumb.screenshot(video, opts);
+        
+        //TODO: Figure out a way to calculate similarity between images as every captured image is slightly different...
+        ok(base64Data,"Screenshot was taken")
+        start();
+        player.dispose();
+      }
+      else {
+        ok(false, "Screenshots not supported");
+        start();
+        player.dispose();
+      }
+    });
+  });
+  
 }());

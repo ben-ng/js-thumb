@@ -61,7 +61,8 @@ var videoOpts = {
     }
   };
 
-jsthumb.loadVideo(videoOpts, function (err, element, player, complete) {
+//Appends the video to the body of the page
+jsthumb.loadVideo(document.body, videoOpts, function (err, element, player, supported) {
   var video = $(element).find("video")[0];
   
   //This is the container div with all the Video.js controls
@@ -73,14 +74,13 @@ jsthumb.loadVideo(videoOpts, function (err, element, player, complete) {
   //This is the Video.js player
   ok(player, "Player exists");
   
-  //You must add the video container to the DOM within this call if you want the resize option
-  $("#my_app").append(element);
-  
-  //After adding the video to the container, call this method to trigger the initial resize
-  complete();
-  
-  //We bind to window.onresize to keep your videos scaled correctly
+  //This tells you whether or not thumbnailing is supported
+  ok(supported, "Thumbnailing is available");
 });
 ```
 
 You can use `.loadVideo` to load the same video file multiple times on your page, just remember to set a different `id` attribute for each one.
+
+##Broken
+
+JS-Thumb requires HTML5 Video. This means that videos playing through a flash fallback *will not work*. Firefox and Opera at this time of writing do not support playing `.mp4` videos with the `<video>` tag.
