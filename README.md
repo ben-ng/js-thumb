@@ -88,3 +88,6 @@ JS-Thumb relies on the HTML5 `<video` tag. Firefox and Opera at this time of wri
 
 ###Mobile
 Thumbnailing on iOS and Android devices is not supported at this time due to browser limitations. `.loadVideo` will still create a playable video, however.
+
+##CI
+We're [broken](https://travis-ci.org/ben-ng/js-thumb) on Travis-CI because PhantomJS does not yet support media like video and audio. If you have an idea of how to overcome this, I'm all ears!
