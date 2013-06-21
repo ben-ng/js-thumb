@@ -17,78 +17,58 @@ $(function() {
   */
   
   //Create the video element
-  var vWidth = 560
-    , vHeight = 320
-    , source = $("<source />").attr({
-      src: "media/lego.mp4"
-    , type: "video/mp4"
-    })
-  , video = $("<video />").attr({
-      id: "example_video"
-    , class: "video-js vjs-default-skin"
-    , controls: "controls"
-    , preload: "auto"
-    , width: vWidth
-    , height: vHeight
-    }).append(source); //Append source to video element
+  var videoOpts = {
+      sources: [
+        {
+          src: "media/lego.mp4"
+        , type: "video/mp4"
+        }
+      ]
+    , attributes: {
+        id: "example_video"
+      , resize: true
+      }
+    };
   
   //Add the video
-  $("#example_video_pane").append(video);
-  
-  //This resizes the video to fit the pane
-  var resizeExampleVideo = function(e) {
-    if(e) {
-      e.preventDefault();
-      e.stopPropagation();
+  jsthumb.loadVideo(videoOpts, function (err, element, player, complete) {
+    var video = $(element).find("video")[0];
+    
+    if(err) {
+      $("#example_video_pane").text("The video failed to load: " + err);
     }
-    
-    var newWidth = $("#example_video_pane").innerWidth()
-      , newHeight = vHeight * (newWidth/vWidth)
-      , player = _V_("example_video");
-    
-    player.width(newWidth);
-    player.height(newHeight);
-  };
-  
-  //Trigger the resize whenever the window changes
-  $(window).resize(resizeExampleVideo);
-  
-  //Init with video.js
-  _V_("example_video", {}, function(){
-    var player = _V_("example_video")
-      , video = $("#example_video").find("video")[0];
-    
-    
-    //Resize to fit
-    resizeExampleVideo();
-    
-    $("#example_video_form").submit(function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+    else {
+      $("#example_video_pane").append(element);
       
-      var dims = getDimensions($("#video_thumb_size").val())
-        , opts = {
-            origWidth: player.width()
-          , origHeight: player.height()
-          }
-        , resizingOpts = {
-            origWidth: opts.origWidth
-          , origHeight: opts.origHeight
-          , maxWidth:dims.width
-          , maxHeight:dims.height
-          }
-        , base64Data = jsthumb.screenshot(video, opts)
-        , image = $("<image />")
-        , thumbnailDiv = $("#example_video_thumbnails");
-      
-      //Resize the image
-      jsthumb.resizeData(base64Data, resizingOpts, function(err, resizedData) {
-        image.attr("src",resizedData);
-        thumbnailDiv.prepend(image);
+      $("#example_video_form").submit(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var dims = getDimensions($("#video_thumb_size").val())
+          , opts = {
+              origWidth: player.width()
+            , origHeight: player.height()
+            }
+          , resizingOpts = {
+              origWidth: opts.origWidth
+            , origHeight: opts.origHeight
+            , maxWidth:dims.width
+            , maxHeight:dims.height
+            }
+          , base64Data = jsthumb.screenshot(video, opts)
+          , image = $("<image />")
+          , thumbnailDiv = $("#example_video_thumbnails");
+        
+        //Resize the image
+        jsthumb.resizeData(base64Data, resizingOpts, function(err, resizedData) {
+          image.attr("src",resizedData);
+          thumbnailDiv.prepend(image);
+        });
       });
-    });
+      
+      complete();
+    }
   });
-  
   
   /*
   * Image Demo Setup
