@@ -7,4 +7,4 @@ node_js:
   - "0.10"
   - "0.8"
 
-script: ./node_modules/grunt/lib/grunt/cli.js test --verbose --force
+script: node ./node_modules/grunt/lib/grunt/cli.js test --verbose --force
