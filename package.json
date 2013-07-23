@@ -8,7 +8,7 @@
     "browserify",
     "thumbnail"
   ],
-  "version": "0.0.7",
+  "version": "0.0.8",
   "repository": {
     "type": "git",
     "url": "git://github.com/ben-ng/js-thumb.git"
