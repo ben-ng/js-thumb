@@ -20,12 +20,41 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary
 
 #testpane,
 #demopane,
+.graypane,
 .pane {
   position: relative;
   display: inline-block;
   width: 33.33%;
   float: left;
   overflow: hidden;
+}
+
+.graypane {
+  width: 100%;
+  color: #FFF;
+  background-color: #333;
+}
+
+.graypane a:link,
+.graypane a:hover,
+.graypane a:active,
+.graypane a:visited {
+  color: #1e91cf;
+  text-decoration: none;
+}
+
+.graypane h3 {
+  margin-left: 20px;
+}
+
+.graypane p {
+  padding: 0 20px;
+}
+
+.graypane a:hover,
+.graypane a:active {
+  color: #00a7ff;
+  text-decoration: underline;
 }
 
 #demopane {

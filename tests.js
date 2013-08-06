@@ -1,4 +1,6 @@
 (function () {
+  QUnit.config.testTimeout = 5000;
+
   var _videoJs
   , videoJsAliases = ['videojs', 'vjs', '_V_']
   , i, ii, alias;
@@ -71,6 +73,8 @@
       jsthumb.resizeData(imageData, opts, function(err, base64Data) {
         //TODO: Figure out a way to calculate similarity between images as every captured image is slightly different...
         ok(base64Data,"Thumbnail was taken")
+        console.log(imageData);
+        console.log(base64Data);
         start();
       });
   });

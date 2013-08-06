@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Responsive Layouts &amp; js-thumb</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+      }
+    </style>
+    <link href="http://vjs.zencdn.net/4.0/video-js.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Responsive Js-Thumb</h1>
+        <p>
+          <pre>
+// The loadVideo method helps you embed a video
+// and gives you a callback that lets you know
+// if thumbnailing is possible in this browser
+var opts = {
+    sources: [
+      {
+        src: "lego.mp4"
+      , type: "video/mp4"
+      }
+    ]
+  , attributes: {
+      // `resize:true` resizes video to fill parent element
+      // `resize:{maxWidth: 400}` stops at 400px width
+      resize: true
+    , center: true
+    , id: 'some-unique-id'
+    }
+  }
+  , elem = document.getElementById('my-vid');
+
+jsthumb.loadVideo(elem
+  , opts
+  , function (err, element, player, supported) {
+    // do something?
+  }
+);
+          </pre>
+          Done here? <a href="../">Go back to the tests</a> or <a href="https://github.com/ben-ng/js-thumb">fork me</a>.
+        </p>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2>Span 12, Max-Width 600px, Centered</h2>
+          <div id="video-one"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <h2>Span 4</h2>
+          <div id="video-two"></div>
+        </div>
+        <div class="col-lg-6">
+          <h2>Span 6</h2>
+          <div id="video-three"></div>
+        </div>
+        <div class="col-lg-2">
+          <h2>Span 2</h2>
+          <div id="video-four"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+    <script src="js/respond.min.js"></script>
+
+    <!-- js-thumb stuff -->
+    <script src=".././lib/video.js"></script>
+    <script src="../../lib/js-thumb.js"></script>
+
+    <script type="text/javascript">
+      //Create the video element
+      var videoOpts = {
+          sources: [
+            {
+              src: "../media/lego.mp4"
+            , type: "video/mp4"
+            }
+          , {
+              src: "../media/lego.webm"
+            , type: "video/webm"
+            }
+          ]
+        , attributes: {
+            resize: true
+          , center: true
+          }
+        }
+        , videos = ['video-two','video-three','video-four']
+        , opts;
+
+      // Add first video, which has a max resize limit
+      opts = JSON.parse(JSON.stringify(videoOpts));
+      opts.attributes.resize = {
+        maxWidth: 600
+      };
+      opts.attributes.id = 'video-one-vjs';
+      jsthumb.loadVideo(document.getElementById('video-one'), opts, function (){});
+
+      //Add videos two to four
+      for(var i=0, ii=videos.length; i<ii; i++) {
+        // Stupid-clone the options
+        opts = JSON.parse(JSON.stringify(videoOpts));
+
+        // Set a unique ID so that the videos don't destroy each other
+        opts.attributes.id = videos[i] + '-vjs';
+
+        jsthumb.loadVideo(document.getElementById(videos[i]), opts, function (){});
+      }
+    </script>
+  </body>
+</html>
