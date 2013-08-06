@@ -20,8 +20,8 @@ task('demo', ['cleandemo'], function () {
   utils.file.cpR('test', DEMO_PATH, {silent:false});
 
   //Replace references to "../lib" with "./lib"
-  fs.writeFileSync(DEMO_INDEX, fs.readFileSync(DEMO_INDEX).toString().replace(/\.\.\/lib/,'./lib'));
-  fs.writeFileSync(DEMO_RESPONSIVE_INDEX, fs.readFileSync(DEMO_RESPONSIVE_INDEX).toString().replace(/\.\.\/lib/,'./lib'));
+  fs.writeFileSync(DEMO_INDEX, fs.readFileSync(DEMO_INDEX).toString().replace(/\.\.\/lib/g,'./lib'));
+  fs.writeFileSync(DEMO_RESPONSIVE_INDEX, fs.readFileSync(DEMO_RESPONSIVE_INDEX).toString().replace(/\.\.\/lib/g,'./lib'));
 
   //Copy over lib
   utils.file.cpR('lib', path.join(DEMO_PATH,'lib'), {silent:false});
