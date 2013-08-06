@@ -5,7 +5,8 @@ var utils = require('utilities')
   , fs = require('fs')
   , DEMO_DIR = 'demosite'
   , DEMO_PATH = path.join(__dirname, DEMO_DIR)
-  , DEMO_INDEX = path.join(__dirname, DEMO_DIR, 'index.html');
+  , DEMO_INDEX = path.join(__dirname, DEMO_DIR, 'index.html')
+  , DEMO_RESPONSIVE_INDEX = path.join(__dirname, DEMO_DIR, 'responsive', 'index.html');
 
 task('cleandemo', function () {
   utils.file.rmRf(DEMO_DIR);
@@ -14,13 +15,14 @@ task('cleandemo', function () {
 desc('Builds the demo site');
 task('demo', ['cleandemo'], function () {
   console.log("Rebuilding Demo Site");
-  
+
   //Copy over demo files
   utils.file.cpR('test', DEMO_PATH, {silent:false});
-  
-  //Replace references to "../lib" with "lib"
-  fs.writeFileSync(DEMO_INDEX, fs.readFileSync(DEMO_INDEX).toString().replace(/\.\.\/lib/,'lib'));
-  
+
+  //Replace references to "../lib" with "./lib"
+  fs.writeFileSync(DEMO_INDEX, fs.readFileSync(DEMO_INDEX).toString().replace(/\.\.\/lib/,'./lib'));
+  fs.writeFileSync(DEMO_RESPONSIVE_INDEX, fs.readFileSync(DEMO_RESPONSIVE_INDEX).toString().replace(/\.\.\/lib/,'./lib'));
+
   //Copy over lib
   utils.file.cpR('lib', path.join(DEMO_PATH,'lib'), {silent:false});
 });
@@ -31,13 +33,13 @@ task('watch', ['demo'], {async: true}, function () {
     , opts = {
         filter: function (filePath) {
           var test = filePath.indexOf(DEMO_PATH) < 0;
-          
+
           console.log((test ? "   ": "NO ") + filePath);
-          
+
           return test;
         }
       };
-  
+
   watchr.watch({
     interval: 500
   , duplicateDelay: false
@@ -49,7 +51,7 @@ task('watch', ['demo'], {async: true}, function () {
     ]
   , listener: function() {
       clearTimeout(rebuildTimeout);
-      
+
       rebuildTimeout = setTimeout(function () {
         jake.Task['demo'].reenable();
         jake.Task['demo'].invoke();
