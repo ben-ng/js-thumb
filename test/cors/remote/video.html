@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cross-Domain Video Thumbnailing</title>
+    <link href="video-js/video-js.css" rel="stylesheet">
+    <script src="video-js/video.js"></script>
+    <script src="js-thumb.js"></script>
+  </head>
+  <body>
+  <div id="container">
+  </div>
+  <form id="thumbform">
+    <select id="thumbchoices">
+      <option value="560x320">Full Size</option>
+      <option value="280x160">Half Size</option>
+      <option value="300x150">300x150</option>
+      <option value="150x300">150x300</option>
+      <option value="200x200">200x200</option>
+    </select>
+  </form>
+  <script>
+    (function () {
+      var videoOpts = {
+            sources: [
+              {
+                src: "lego.mp4"
+              , type: "video/mp4"
+              }
+            , {
+                src: "lego.webm"
+              , type: "video/webm"
+              }
+            ]
+          , attributes: {
+              id: "example_video"
+            , resize: true
+            }
+          }
+        , container = document.getElementById("container")
+        , form = document.getElementById("thumbform")
+        , select = document.getElementById("thumbchoices")
+        , getDimensions = function(str) {
+            var splitted = str.split('x')
+              , out = {
+                  width: splitted[0]
+                , height: splitted[1]
+                };
+            
+            return out;
+          };
+      
+      form.style.visibility = "hidden";
+      
+      jsthumb.loadVideo(container, videoOpts, function (err, element, player, supported) {
+        //Find the video element
+        var video, i, ii;
+        
+        for(i=0, ii=element.childNodes.length; i<ii; i++) {
+          if(element.childNodes[i].tagName.toLowerCase() === "video") {
+            video = element.childNodes[i];
+            continue;
+          }
+        }
+        
+        if(err) {
+          container.appendChild(document.createTextNode("An error occured: "+err));
+        }
+        else {
+          if(!supported || !video) {
+            container.appendChild(document.createTextNode('Your browser is not yet supported. <a href="https://github.com/ben-ng/js-thumb#broken">Why?</a>'));
+          }
+          else {
+            select.onchange = function (e) {
+              
+              e.preventDefault();
+              e.stopPropagation();
+              
+              var dims = getDimensions(select.options[select.selectedIndex].value)
+                , opts = {
+                    origWidth: player.width()
+                  , origHeight: player.height()
+                  }
+                , resizingOpts = {
+                    maxWidth:dims.width
+                  , maxHeight:dims.height
+                  }
+                , base64Data = jsthumb.screenshot(video, opts)
+                , image = new Image();
+              
+              //Resize the image
+              jsthumb.resizeData(base64Data, resizingOpts, function(err, resizedData) {
+                window.parent.alert(base64Data);
+              });
+            };
+            
+            form.style.visibility = "visible";
+          }
+        }
+      });
+      
+      alert(window.location.hash);
+    }());
+  </script>
+  </body>
+</html>
