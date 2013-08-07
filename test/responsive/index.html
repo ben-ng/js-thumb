@@ -106,6 +106,7 @@ jsthumb.loadVideo(elem
       opts = JSON.parse(JSON.stringify(videoOpts));
       opts.attributes.resize = {
         maxWidth: 600
+      , upscale: true
       };
       opts.attributes.id = 'video-one-vjs';
       jsthumb.loadVideo(document.getElementById('video-one'), opts, function (){});
